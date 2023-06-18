@@ -1,0 +1,15 @@
+@mixin fullViewport() {
+    width: 100vw;
+    height: 100vh;
+}
+
+@mixin fullStretch() {
+    width: 100%;
+    height: 100%;
+}
+
+@mixin flexCentered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
