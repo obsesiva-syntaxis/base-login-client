@@ -19,7 +19,6 @@ interface UserEssence {
     created_at: string;
     modified_at?: string;
     deleted_at?: string;
-
 }
 
 interface LoginEssence {

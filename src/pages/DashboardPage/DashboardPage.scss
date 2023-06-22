@@ -1,0 +1,6 @@
+@import '../../styles/index.scss';
+
+.dashboard {
+    @include fullViewport();
+    background-color: $bg-dark-ucc;
+}

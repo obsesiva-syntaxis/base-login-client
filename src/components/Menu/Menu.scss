@@ -1,0 +1,43 @@
+@import '../../styles/index.scss';
+
+// .menu {
+//     position: absolute;
+//     bottom: 0;
+//     top: 93%;
+//     left: 50%;
+//     right: 50%;
+//     background-color: $bg-red-ucc;
+//     width: 10rem;
+//     height: 5rem;
+//     z-index: 5;
+// }
+
+.menu {
+    position: absolute;
+    bottom: 0;
+    top: 93%;
+    left: 50%;
+    right: 50%;
+    margin: 0;
+    // display: flex;
+//   Works well with 100% width
+    width: 10rem;
+    height: 5rem;
+    z-index: 5;
+    font-size: 1.5em;
+    padding: 0 2.85em; 
+    // position: relative; align-items: center;
+    // justify-content: center;
+    background-color: $bg-red-ucc;
+}
+
+.menu__item {
+    all: unset;
+    flex-grow: 1; z-index: 100;
+    display: flex;
+    cursor: pointer;
+    position: relative; border-radius: 50%; align-items: center;
+    will-change: transform; justify-content: center;
+    padding: 0.55em 0 0.85em;
+    // transition: transform var (--timeOut , var (=-d
+}
