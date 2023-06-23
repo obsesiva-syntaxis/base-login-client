@@ -3,6 +3,7 @@ import LoginPage from "../pages/LoginPage/LoginPage"
 import Layout from "../Layout";
 import { DashboardPage } from "../pages/DashboardPage/DashboardPage";
 import { AxiosAdapter } from "../patterns/AxiosAdapter";
+import { UserLoggedEssence } from "../interfaces/auth/auth.interface";
 
 interface VerifyUserEssence {
     token: string;
@@ -10,16 +11,23 @@ interface VerifyUserEssence {
 }
 
 const verifyUserPromise = async (): Promise<Boolean> => {
-    console.log(localStorage.getItem('userLogged'));
+
+    const userLogged: UserLoggedEssence = JSON.parse(localStorage.getItem('userLogged') || '{}');
+
+
     const http = new AxiosAdapter();
-    // return await http.post<Boolean>('http://127.0.0.1:6666/api/auth/login', payload);
+    return await http.post<Boolean>('http://127.0.0.1:3030/api/auth/verify-user', {
+        token: userLogged.token,
+        userId: userLogged.userId
+    });
     return true;
 }
 
 const Protected = ({ children }: { children: JSX.Element }) => {
     const location = useLocation();
-    verifyUserPromise()
-    return <Navigate to="/" state={{ from: location }} replace />;
+    // verifyUserPromise()
+
+    // return <Navigate to="/" state={{ from: location }} replace />;
     // return children;
 }
 
@@ -29,10 +37,11 @@ const Router = () => {
             <Route path="/" element={<LoginPage />} />
             <Route element={<Layout />}>
                 <Route path="/dashboard" element={ 
-                    <Protected>
+                    // <Protected>
                         <DashboardPage />
-                    </Protected>
-                }/>
+                    // </Protected>
+                }
+                />
             </Route>
         </Routes>
     )

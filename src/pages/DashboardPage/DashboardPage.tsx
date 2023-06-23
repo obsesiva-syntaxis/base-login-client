@@ -1,8 +1,8 @@
-
+import './Dashboard.scss';
 
 export const DashboardPage = () => {
     return (
-        <div>
+        <div className="dashboard">
             <h1>DASHBOARD</h1>
         </div>
     )
