@@ -1,4 +1,4 @@
-import './Dashboard.scss';
+import './DashboardPage.scss';
 
 export const DashboardPage = () => {
     return (

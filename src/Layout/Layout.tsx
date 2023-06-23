@@ -1,8 +1,13 @@
 import { Outlet } from "react-router-dom";
+import { Menu } from "../components/Menu/Menu";
+import './Layout.scss';
 
 const Layout = () => {
     return (
-        <Outlet />
+        <div className="layout">
+            <Outlet />
+            <Menu />
+        </div>
     )
 }
 
