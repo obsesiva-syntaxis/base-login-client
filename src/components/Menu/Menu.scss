@@ -1,5 +1,22 @@
 @import '../../styles/index.scss';
 
+$primary-color-menu: #2c085d;
+$secondary-color-menu: #ffd900;
+$error-color-menu: #780707;
+
+@mixin boxShadowMenu() {
+    box-shadow: 0rem 0rem 1rem rgba(0, 0, 0, 0.759);
+}
+
+@mixin iconGlow($color) {
+    &:hover {
+        i {
+            color: $color;
+            filter: drop-shadow(0rem 0rem .5rem $color);
+        }
+    }
+}
+
 .menu {
     position: absolute;
     bottom: 0;
@@ -10,24 +27,106 @@
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr;
 
-    menu__logout {
+    &__logout {
         grid-column: 1/2;
-        grid-row: 2/3;
+        grid-row: 1/2;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-left: 2rem;
+        cursor: pointer;
         
-        menu__logout-btn {
-            background-color: white;
-            width: 5rem;
-            height: 5rem;
+        &-btn {
+            background-color: $primary-color-menu;
+            width: 8rem;
+            height: 8rem;
+            border-radius: 1rem;
+            @include boxShadowMenu();
+            @include iconGlow($error-color-menu);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            i {
+                color : white;
+                font-size: 4em;
+            }
         }
     }
 
-    menu__navbar {
-        grid-column: 1/2;
-        grid-row: 2/3;
+    &__nav {
+        grid-column: 2/3;
+        grid-row: 1/2;
+        // background-color: rgba(0, 255, 255, 0.236);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+
+        &-bar {
+            @include boxShadowMenu();
+            display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            width: 60rem;
+            height: 8rem;
+            border-radius: 1rem;
+            background-color: $primary-color-menu;
+
+            &-item {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                @include iconGlow($secondary-color-menu);
+
+                i {
+                    color: white;
+                    font-size: 4em;
+
+                    
+                }
+            }
+        }
     }
 
-    menu__user {
-        grid-column: 1/2;
-        grid-row: 2/3;
+    &__user {
+        grid-column: 3/4;
+        grid-row: 1/2;
+
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-right: 2rem;
+        gap: 1rem;
+
+        &-info {
+            text-align: end;
+            color: white;
+            &-name {
+                @include fontPrimaryRegular();
+                font-size: 2em;
+            }
+            
+            &-email {
+                @include fontPrimaryLight();
+                font-size: 1.5em;
+            }
+
+        }
+        
+        &-avatar {
+            @include boxShadowMenu();
+            background-color: $primary-color-menu;
+            width: 8rem;
+            height: 8rem;
+            border-radius: 1rem;
+            background-image: url('https://static1.personality-database.com/profile_images/157485b862244e8aa2955f5bbfcdddb2.png');
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            
+        }
     }
 }
