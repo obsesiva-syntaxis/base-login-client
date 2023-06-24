@@ -10,9 +10,9 @@ const Router = () => {
             <Route path="/" element={<LoginPage />} />
             <Route element={<Layout />}>
                 <Route path="/dashboard" element={ 
-                    // <Protected>
+                    <Protected>
                         <DashboardPage />
-                    // </Protected>
+                    </Protected>
                 }
                 />
             </Route>
