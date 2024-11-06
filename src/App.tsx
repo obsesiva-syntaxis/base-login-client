@@ -1,10 +1,12 @@
+import { Toaster } from "react-hot-toast";
 import Router from "./routes/Router";
 
 function App() {
   return (
-    // <Provider store={ store }>
-      <Router />
-    // </Provider>
+    <>
+      <Toaster position="top-center"/>
+      <Router />    
+    </>
   );
 }
 

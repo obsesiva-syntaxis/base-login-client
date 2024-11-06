@@ -4,6 +4,8 @@ import { AxiosAdapter } from '../../patterns/AxiosAdapter';
 import Loader from '../../components/Loader';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import { useAuthStore } from '../../store/authStore';
+import toast from 'react-hot-toast';
 import './LoginPage.scss';
 
 interface LoginFormEssence {
@@ -26,12 +28,23 @@ interface LoginEssence {
     user: UserEssence;
 }
 
+interface UserLogged { 
+    userId: string; 
+    email: string; 
+    fullName: string; 
+    active: boolean; 
+    token: string; 
+}
+
 const LoginPage = () => {
     const [isLoading, setIsLoading] = useState<Boolean>(false);
     const [errorMessage, setErrorMessage] = useState<String>('')
     const http = new AxiosAdapter();
 
     const nav = useNavigate();
+
+    // Implementación de Zustand
+    const setUser = useAuthStore((state) => state.setUser);
 
     const initialValues = {
         email: '',
@@ -47,15 +60,23 @@ const LoginPage = () => {
         setIsLoading(true);
         try {
             const { token, user } = await http.post<LoginEssence>('http://localhost:3030/api/auth/login', values);
-            const userLogged = {
+            const userLogged: UserLogged = {
                 userId: user.id, 
                 email: user.email,
                 fullName: user.fullname,
                 active: user.active,
                 token: token,
             }
-            // TODO: si usuario esta inactivo enviar mensaje 
-            localStorage.setItem('userLogged', JSON.stringify(userLogged));
+            // TODO: si usuario esta inactivo enviar mensaje
+            if (!user.active) {
+                setErrorMessage('Usuario inactivo, comuniquese con soporte técnico');
+                setIsLoading(false);
+                return;
+            }
+
+            setUser(userLogged);
+            sessionStorage.setItem('userLogged', JSON.stringify(userLogged));
+            notifySuccess(userLogged);
             setIsLoading(false);
             nav('/dashboard');
         } catch (err: any) {
@@ -68,6 +89,8 @@ const LoginPage = () => {
         console.log('reseteando error!');
         setErrorMessage('');
     }
+
+    const notifySuccess = (user: UserLogged) => toast.success(`${user.email} ha iniciado sesión correctamente!`, {duration: 2000});
 
     return (
         <div className="login-page">
@@ -97,7 +120,9 @@ const LoginPage = () => {
                                             !isLoading ? (
                                                 `Ingresar`
                                             ) : (
-                                                <Loader />
+                                                <>
+                                                    <Loader />
+                                                </>    
                                             )
                                         }
                                     </button>

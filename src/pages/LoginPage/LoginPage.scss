@@ -5,14 +5,34 @@
     @include flexCentered();
     flex-direction: column;
     gap: 1rem;
+    background: url('../../../public/Leonardo_Phoenix_I_need_a_beautiful_crimson_gem_with_imperfect_3.jpg') center center/cover no-repeat;
     background-color: $bg-dark-ucc;
+    position: relative;
+    
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
 
     &__card {
+        position: relative;
         width: 40rem;
         height: 50rem;
+        padding: 2rem;
         border-radius: $card-border-radius;
-        background-color: white;
-
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px); 
+        color: white;
+        z-index: 2;
+        
         display: grid;
         grid-template-columns: 1fr;
         grid-template-rows: 6rem 1fr 6rem;
@@ -33,6 +53,11 @@
             grid-row: 3/4;
             @include flexCentered();
         }
+
+        &-header, &-body, &-footer {
+            z-index: 2;
+        }
+        
     }
 
     &__error {
@@ -59,18 +84,20 @@
     all: unset;
     cursor: pointer;
     width: 10rem;
-    height: 3rem;
-    background-color: $bg-red-ucc;
+    height: 5rem;
+    background-color: #00806b;
     color: #fff;
     text-align: center;
     @include fontPrimaryLight();
     border-radius: .5rem;
     font-size: 2rem;
-    transition: transform .5s ease;
+    transition: transform .3s ease-in-out, letter-spacing .3s ease-in-out;
+    padding: 0.5rem;
 
     &:hover {
-        background-color: $bg-red-ucc-light;
-        box-shadow: .1rem .1rem 1rem $bg-red-ucc;
+        background-color: #018670;
+        letter-spacing: 0.2rem;
+        transform: scale(1.1);
     }
 
     &:active {
@@ -98,8 +125,10 @@
         }
 
         .login-form__group-input {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
             @include fontPrimaryRegular();
-            border: .1rem solid #005780;
+            border: .1rem solid #00806b;
             height: 4rem;
             font-size: 2rem;
             border-radius: .5rem;
@@ -107,14 +136,16 @@
 
             &:focus {
                 outline: none;
-                box-shadow: .1rem .1rem .5rem #005780;
+                box-shadow: .1rem .1rem .5rem #00806b;
             }
         }
          
         span {
             @include fontPrimaryLight();
-            font-size: 1.5rem;
-            color: crimson;
+            font-size: 2rem;
+            font-weight: 500;
+            letter-spacing: 0.1rem;
+            color: #00806b;
         }
     }
 }

@@ -3,4 +3,9 @@
 .dashboard {
     @include fullViewport();
     background-color: $bg-dark-ucc;
+    color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
