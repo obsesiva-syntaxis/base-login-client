@@ -99,7 +99,9 @@ const LoginPage = () => {
                     ( formik ) => (
                         <Form>
                             <div className="login-page__card">
-                                <div className="login-page__card-header"></div>
+                                <div className="login-page__card-header">
+                                    <h2>Iniciar Sesión</h2>
+                                </div>
                                 <div className="login-page__card-body">
                                     <div className="login-form">
                                         <div className="login-form__group">

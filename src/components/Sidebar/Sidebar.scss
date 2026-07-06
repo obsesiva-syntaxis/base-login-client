@@ -1,0 +1,377 @@
+@import '../../styles/index.scss';
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    height: 98%;
+    width: $sidebar-width;
+    background: $bg-surface;
+    border-radius: $card-border-radius;
+    display: flex;
+    flex-direction: column;
+    color: $bg-dark-text;
+    overflow: hidden;
+    user-select: none;
+    transition: width .3s ease-in-out;
+    margin: 1rem;
+
+    &--collapsed {
+        width: $sidebar-width-min;
+
+        .sidebar__header {
+            padding: 0;
+            justify-content: center;
+        }
+
+        .sidebar__title {
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+        }
+
+        .sidebar__toggle {
+            position: relative;
+            right: auto;
+            width: 100%;
+        }
+
+        .sidebar__burger {
+            color: $primary-green;
+        }
+
+        .sidebar__nav-button {
+            justify-content: center;
+            padding: 0;
+
+            i {
+                opacity: 1;
+                position: relative;
+            }
+
+            span {
+                opacity: 0;
+                pointer-events: none;
+                position: absolute;
+            }
+        }
+
+        .sidebar__footer-heading {
+            justify-content: center;
+        }
+
+        .sidebar__footer-avatar {
+            margin-left: 0;
+        }
+
+        .sidebar__footer-titlebox,
+        .sidebar__footer-caret {
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+        }
+    }
+
+    &__header {
+        position: relative;
+        min-height: 8rem;
+        display: flex;
+        align-items: center;
+        padding: 0 1.6rem;
+    }
+
+    &__title {
+        @include fontPrimaryLight();
+        font-size: 1.6rem;
+        color: $bg-dark-text;
+    }
+
+    &__toggle {
+        all: unset;
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        width: 3rem;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__burger {
+        font-size: 1.6rem;
+        color: $primary-green;
+        transition: color .2s ease-in-out, transform .2s ease-in-out;
+    }
+
+    &__divider {
+        margin: 0 1.6rem;
+        border: none;
+        border-top: .1rem solid $gray-100;
+    }
+
+    &__content {
+        position: relative;
+        flex: 1;
+        padding: 1.6rem 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        &::-webkit-scrollbar {
+            width: .6rem;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            border-radius: 99px;
+            background-color: $primary-green;
+        }
+    }
+
+    &__content-highlight {
+        position: absolute;
+        left: 0;
+        top: -7rem;
+        width: 100%;
+        height: 5.4rem;
+        background: rgba($primary-green, 0.12);
+        border-left: .3rem solid $primary-green;
+        transition: top .2s ease-in-out;
+        pointer-events: none;
+    }
+
+    &__nav-button {
+        position: relative;
+        height: 5.4rem;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        padding: 0 1.6rem;
+        color: $gray-600;
+        cursor: pointer;
+        z-index: 1;
+        transition: color .2s ease-in-out;
+
+        i {
+            min-width: 2rem;
+            text-align: center;
+            font-size: 1.6rem;
+            transition: color .2s ease-in-out;
+        }
+
+        span {
+            @include fontPrimaryRegular();
+            font-size: 1.5rem;
+            transition: opacity .1s ease-in-out;
+        }
+
+        &:hover {
+            color: $primary-green;
+
+            i {
+                color: $primary-green;
+            }
+        }
+    }
+
+    &__footer {
+        position: relative;
+        width: 100%;
+        background: $gray-100;
+        border-radius: $card-border-radius;
+        display: flex;
+        flex-direction: column;
+        transition: max-height .2s ease-in-out;
+        max-height: 5.4rem;
+        overflow: hidden;
+
+        &--open {
+            max-height: 14rem;
+        }
+    }
+
+    &__footer-heading {
+        position: relative;
+        width: 100%;
+        height: 5.4rem;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    &__footer-avatar {
+        position: relative;
+        margin: 1.1rem 0 1.1rem 1.6rem;
+        width: 3.2rem;
+        height: 3.2rem;
+        border-radius: 50%;
+        overflow: hidden;
+        background: $primary-green;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 1.4rem;
+        @include fontPrimaryRegular();
+        transition: margin .2s ease-in-out;
+        flex-shrink: 0;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    &__footer-titlebox {
+        margin-left: 1.2rem;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    &__footer-title {
+        @include fontPrimaryRegular();
+        font-size: 1.4rem;
+        color: $bg-dark-text;
+    }
+
+    &__footer-subtitle {
+        @include fontPrimaryLight();
+        font-size: 1.2rem;
+        color: $accent-blue;
+    }
+
+    &__footer-caret {
+        all: unset;
+        cursor: pointer;
+        position: absolute;
+        right: 0;
+        width: 3rem;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $gray-600;
+        transition: transform .2s ease-in-out, opacity .2s ease-in-out;
+    }
+
+    &--collapsed &__footer-heading {
+        justify-content: center;
+    }
+
+    // Transición base de TODOS (texto + ícono)
+    &__title,
+    &__nav-button span,
+    &__nav-button i,
+    &__footer-titlebox,
+    &__footer-caret {
+        opacity: 0;
+        transition: opacity 0s ease-in-out;
+    }
+
+    // Al EXPANDIR: contenedor crece (.3s), luego aparece el TEXTO
+    &:not(.sidebar--collapsed) {
+
+        .sidebar__title,
+        .sidebar__nav-button span,
+        .sidebar__footer-titlebox,
+        .sidebar__footer-caret {
+            opacity: 1;
+        }
+
+        .sidebar__title,
+        .sidebar__nav-button span,
+        .sidebar__footer-titlebox,
+        .sidebar__footer-caret {
+            transition-delay: .5s;
+            animation: icon-fade-cycle .30s ease-in-out;
+
+        }
+    }
+
+    // Al COLAPSAR: el TEXTO se esconde de inmediato
+    @keyframes icon-fade-cycle {
+        0% {
+            opacity: 0;
+        }
+
+        40% {
+            opacity: 0;
+        }
+
+        60% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    &--collapsed {
+
+        .sidebar__nav-button i,
+        .sidebar__footer-avatar {
+            animation: icon-fade-cycle .45s ease-in-out;
+        }
+
+        .sidebar__title,
+        .sidebar__nav-button span,
+        .sidebar__footer-titlebox,
+        .sidebar__footer-caret {
+            opacity: 0;
+        }
+    }
+
+    @keyframes icon-fade-out-in {
+        0% {
+            opacity: 0;
+        }
+
+        40% {
+            opacity: 0;
+        }
+
+        60% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    &:not(.sidebar--collapsed) {
+        .sidebar__nav-button i,
+        .sidebar__footer-avatar  {
+            animation: icon-fade-out-in .45s ease-in-out;
+            opacity: 1;
+        }
+    }
+}
+
+.sidebar__footer--open .sidebar__footer-caret i {
+    transform: rotate(180deg);
+}
+
+.sidebar__logout-btn {
+    all: unset;
+    cursor: pointer;
+    margin: 0 1.6rem 1.6rem 1.6rem;
+    padding: .8rem 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-top: .1rem solid $gray-300;
+    padding-top: 1.2rem;
+    color: $bg-red;
+    @include fontPrimaryRegular();
+    font-size: 1.4rem;
+    transition: color .2s ease-in-out;
+
+    &:hover {
+        color: darken($bg-red, 10%);
+    }
+}

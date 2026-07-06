@@ -2,7 +2,7 @@
 
 .dashboard {
     @include fullViewport();
-    background-color: $bg-dark-ucc;
+    background-color: $bg-dark;
     color: aliceblue;
     display: flex;
     flex-direction: column;

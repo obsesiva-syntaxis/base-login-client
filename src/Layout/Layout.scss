@@ -1,5 +1,13 @@
 @import '../styles/index.scss';
 
 .layout {
+    @include fullViewport();
     position: relative;
+    overflow: hidden;
+
+    &__content {
+        @include fullViewport();
+        background: $bg-light;
+        transition: padding-left .2s ease-in-out;
+    }
 }
