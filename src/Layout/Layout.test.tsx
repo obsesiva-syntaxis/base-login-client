@@ -16,6 +16,7 @@ const mockUser = {
   fullName: 'Test User',
   active: true,
   token: 'valid-token',
+  roles: ['admin'],
 };
 
 beforeEach(() => {
@@ -37,6 +38,7 @@ it('renders Sidebar with Header, Nav and Footer', () => {
 
   expect(screen.getByText('MiApp')).toBeInTheDocument();
   expect(screen.getByText('Inicio')).toBeInTheDocument();
+  expect(screen.getByText('Administrar')).toBeInTheDocument();
   expect(screen.getByText('Perfil')).toBeInTheDocument();
   expect(screen.getByText('Configuración')).toBeInTheDocument();
   expect(screen.getByText('Test User')).toBeInTheDocument();

@@ -1,3 +1,4 @@
+import { startTransition } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../../store/authStore';
 import { useSidebar } from '../SidebarContext';
@@ -10,8 +11,10 @@ const Footer = () => {
     const nav = useNavigate();
 
     const handleLogout = () => {
-        clearUser();
-        nav('/');
+        startTransition(() => {
+            clearUser();
+            nav('/');
+        });
     };
 
     return (
@@ -34,6 +37,15 @@ const Footer = () => {
                 </button>
             </div>
             <div className="sidebar__footer-content">
+                <button className="sidebar__footer-nav-btn">
+                    <i className="fas fa-user" />
+                    <span>Perfil</span>
+                </button>
+                <button className="sidebar__footer-nav-btn">
+                    <i className="fas fa-cog" />
+                    <span>Configuración</span>
+                </button>
+                <hr className="sidebar__footer-divider" />
                 <button className="sidebar__logout-btn" onClick={handleLogout}>
                     <i className="fas fa-sign-out-alt" />
                     <span>Cerrar sesión</span>

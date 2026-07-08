@@ -1,0 +1,11 @@
+@use '../../styles/index' as *;
+
+.administrar {
+    @include fullViewport();
+    background-color: $color-bg-primary;
+    color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

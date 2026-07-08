@@ -13,7 +13,7 @@
     overflow: hidden;
 
     &--open {
-        max-height: 14rem;
+        max-height: 24rem;
     }
 }
 
@@ -84,6 +84,35 @@
     transition: transform .2s ease-in-out, opacity .2s ease-in-out;
 }
 
+.sidebar__footer-nav-btn {
+    all: unset;
+    cursor: pointer;
+    margin: 0 1.6rem;
+    padding: .8rem 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: $color-text-primary;
+    @include fontPrimaryRegular();
+    font-size: 1.4rem;
+    transition: color .2s ease-in-out;
+
+    &:hover {
+        color: $color-primary;
+    }
+
+    i {
+        min-width: 2rem;
+        text-align: center;
+    }
+}
+
+.sidebar__footer-divider {
+    margin: .4rem 1.6rem;
+    border: none;
+    border-top: .1rem solid $color-border-input;
+}
+
 .sidebar__logout-btn {
     all: unset;
     cursor: pointer;
@@ -131,8 +160,15 @@
     transition: opacity 0s ease-in-out;
 }
 
-.sidebar--collapsed .sidebar__logout-btn span {
+.sidebar--collapsed .sidebar__logout-btn span,
+.sidebar--collapsed .sidebar__footer-nav-btn span,
+.sidebar--collapsed .sidebar__footer-divider {
     opacity: 0;
+}
+
+.sidebar--collapsed .sidebar__footer-content button.sidebar__footer-nav-btn i {
+    font-size: 2.5rem;
+    margin-left: 1.2rem;
 }
 
 .sidebar:not(.sidebar--collapsed) .sidebar__footer-titlebox,
@@ -144,6 +180,7 @@
 
 .sidebar:not(.sidebar--collapsed) .sidebar__footer-avatar,
 .sidebar:not(.sidebar--collapsed) .sidebar__logout-btn span,
+.sidebar:not(.sidebar--collapsed) .sidebar__footer-nav-btn span,
 .sidebar:not(.sidebar--collapsed) .sidebar__footer-content button i {
     animation: icon-fade-cycle .45s ease-in-out;
     opacity: 1;

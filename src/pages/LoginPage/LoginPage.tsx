@@ -19,6 +19,7 @@ interface UserEssence {
     email: string;
     fullname: string;
     active: boolean;
+    roles: string[];
     created_at: string;
     modified_at?: string;
     deleted_at?: string;
@@ -64,6 +65,7 @@ const LoginPage = () => {
                 fullName: user.fullname,
                 active: user.active,
                 token: token,
+                roles: user.roles,
             }
 
             setUser(userLogged);

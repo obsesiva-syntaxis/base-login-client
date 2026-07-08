@@ -40,3 +40,10 @@
 - **Not a monorepo** — single package `fend-uccinv`.
 - **Mock pattern for AxiosAdapter:** Prefer `(AxiosAdapter.prototype as any).method = jest.fn()` over `jest.spyOn().mockImplementation()`. For axios-level mocking, use `jest.mock('axios')` with `(axios.create as jest.Mock).mockReturnValue(mockInstance)` in `beforeEach` after `jest.clearAllMocks()`.
 - **JWT in tests:** Use real (but fake) JWT tokens (`header.payload.signature`) so `jwtDecode` doesn't throw. Generate with `Buffer.from(JSON.stringify(obj)).toString('base64url')`.
+
+## AI Workflow
+
+Before creating any plan or proposing changes, always consult the skills listed in
+`.agents/skills/` (`frontend-design`, `javascript-typescript-jest`, `scss-best-practices`,
+`vercel-composition-patterns`, `vercel-react-best-practices`) and reference the
+relevant rules in the proposal.

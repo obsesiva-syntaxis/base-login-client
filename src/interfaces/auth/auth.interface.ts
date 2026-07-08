@@ -4,5 +4,6 @@ export interface UserLoggedEssence {
     fullName: string;
     active: boolean;
     token: string;
+    roles: string[];
 }
 

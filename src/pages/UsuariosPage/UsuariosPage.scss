@@ -1,0 +1,11 @@
+@use '../../styles/index' as *;
+
+.usuarios {
+    @include fullViewport();
+    background-color: $color-bg-primary;
+    color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

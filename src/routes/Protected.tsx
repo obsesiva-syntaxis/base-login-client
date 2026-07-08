@@ -22,8 +22,7 @@ export const Protected = ({ children }: ProtectedProps) => {
             clearUser();
             navigate('/', { state: { from: location }, replace: true });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [user, isTokenExpired, clearUser, navigate, location]);
 
     if (!user) {
         return <Loader />;
