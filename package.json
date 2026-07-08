@@ -1,5 +1,5 @@
 {
-  "name": "fend-uccinv",
+  "name": "base-login-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
