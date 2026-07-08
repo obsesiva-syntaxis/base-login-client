@@ -1,19 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import jwtDecode from "jwt-decode";
+import type { UserLoggedEssence } from "../interfaces/auth/auth.interface";
 
 interface JwtToken {
   id: string;
   iat: number;
   exp: number;
-}
-
-interface UserLoggedEssence {
-  userId: string;
-  email: string;
-  fullName: string;
-  active: boolean;
-  token: string;
 }
 
 interface AuthStore {
@@ -32,10 +25,22 @@ export const useAuthStore = create<AuthStore>()(
       isTokenExpired: () => {
         const user = get().user;
         if (!user) return true;
-        const { exp }: JwtToken = jwtDecode(user.token);
-        return Date.now() >= exp * 1000;
+        try {
+          const { exp }: JwtToken = jwtDecode(user.token);
+          return Date.now() >= exp * 1000;
+        } catch {
+          return true;
+        }
       },
     }),
-    { name: "auth-storage" }
+    {
+      name: "auth-storage",
+      onRehydrateStorage: () => () => {
+        const { user, isTokenExpired, clearUser } = useAuthStore.getState();
+        if (user && isTokenExpired()) {
+          clearUser();
+        }
+      },
+    }
   )
 );

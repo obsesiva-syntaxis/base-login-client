@@ -1,4 +1,5 @@
-@import '../../styles/index.scss';
+@use 'sass:color';
+@use '../../styles/index' as *;
 
 .sidebar {
     position: fixed;
@@ -7,11 +8,11 @@
     z-index: 1;
     height: 98%;
     width: $sidebar-width;
-    background: $bg-surface;
+    background: $color-bg-surface;
     border-radius: $card-border-radius;
     display: flex;
     flex-direction: column;
-    color: $bg-dark-text;
+    color: $color-text-primary;
     overflow: hidden;
     user-select: none;
     transition: width .3s ease-in-out;
@@ -38,7 +39,7 @@
         }
 
         .sidebar__burger {
-            color: $primary-green;
+            color: $color-primary;
         }
 
         .sidebar__nav-button {
@@ -84,7 +85,7 @@
     &__title {
         @include fontPrimaryLight();
         font-size: 1.6rem;
-        color: $bg-dark-text;
+        color: $color-text-primary;
     }
 
     &__toggle {
@@ -101,14 +102,14 @@
 
     &__burger {
         font-size: 1.6rem;
-        color: $primary-green;
+        color: $color-primary;
         transition: color .2s ease-in-out, transform .2s ease-in-out;
     }
 
     &__divider {
         margin: 0 1.6rem;
         border: none;
-        border-top: .1rem solid $gray-100;
+        border-top: .1rem solid $color-border;
     }
 
     &__content {
@@ -124,7 +125,7 @@
 
         &::-webkit-scrollbar-thumb {
             border-radius: 99px;
-            background-color: $primary-green;
+            background-color: $color-primary;
         }
     }
 
@@ -134,21 +135,23 @@
         top: -7rem;
         width: 100%;
         height: 5.4rem;
-        background: rgba($primary-green, 0.12);
-        border-left: .3rem solid $primary-green;
+        background: rgba($color-primary, 0.12);
+        border-left: .3rem solid $color-primary;
         transition: top .2s ease-in-out;
         pointer-events: none;
     }
 
     &__nav-button {
+        all: unset;
+        cursor: pointer;
         position: relative;
         height: 5.4rem;
+        width: 100%;
         display: flex;
         align-items: center;
         gap: 1.2rem;
         padding: 0 1.6rem;
-        color: $gray-600;
-        cursor: pointer;
+        color: $color-text-secondary;
         z-index: 1;
         transition: color .2s ease-in-out;
 
@@ -166,10 +169,10 @@
         }
 
         &:hover {
-            color: $primary-green;
+            color: $color-primary;
 
             i {
-                color: $primary-green;
+                color: $color-primary;
             }
         }
     }
@@ -177,7 +180,7 @@
     &__footer {
         position: relative;
         width: 100%;
-        background: $gray-100;
+        background: $color-border;
         border-radius: $card-border-radius;
         display: flex;
         flex-direction: column;
@@ -206,7 +209,7 @@
         height: 3.2rem;
         border-radius: 50%;
         overflow: hidden;
-        background: $primary-green;
+        background: $color-primary;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -234,13 +237,13 @@
     &__footer-title {
         @include fontPrimaryRegular();
         font-size: 1.4rem;
-        color: $bg-dark-text;
+        color: $color-text-primary;
     }
 
     &__footer-subtitle {
         @include fontPrimaryLight();
         font-size: 1.2rem;
-        color: $accent-blue;
+        color: $color-accent;
     }
 
     &__footer-caret {
@@ -253,7 +256,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: $gray-600;
+        color: $color-text-secondary;
         transition: transform .2s ease-in-out, opacity .2s ease-in-out;
     }
 
@@ -261,7 +264,6 @@
         justify-content: center;
     }
 
-    // Transición base de TODOS (texto + ícono)
     &__title,
     &__nav-button span,
     &__nav-button i,
@@ -271,107 +273,75 @@
         transition: opacity 0s ease-in-out;
     }
 
-    // Al EXPANDIR: contenedor crece (.3s), luego aparece el TEXTO
-    &:not(.sidebar--collapsed) {
-
-        .sidebar__title,
-        .sidebar__nav-button span,
-        .sidebar__footer-titlebox,
-        .sidebar__footer-caret {
-            opacity: 1;
-        }
-
-        .sidebar__title,
-        .sidebar__nav-button span,
-        .sidebar__footer-titlebox,
-        .sidebar__footer-caret {
-            transition-delay: .5s;
-            animation: icon-fade-cycle .30s ease-in-out;
-
-        }
+    @keyframes icon-fade-cycle {
+        0% { opacity: 0; }
+        40% { opacity: 0; }
+        60% { opacity: 0; }
+        100% { opacity: 1; }
     }
 
-    // Al COLAPSAR: el TEXTO se esconde de inmediato
-    @keyframes icon-fade-cycle {
-        0% {
-            opacity: 0;
-        }
-
-        40% {
-            opacity: 0;
-        }
-
-        60% {
-            opacity: 0;
-        }
-
-        100% {
+    &:not(.sidebar--collapsed) {
+        .sidebar__title,
+        .sidebar__nav-button span,
+        .sidebar__footer-titlebox,
+        .sidebar__footer-caret {
             opacity: 1;
+            transition-delay: .5s;
+            animation: icon-fade-cycle .30s ease-in-out;
         }
     }
 
     &--collapsed {
 
-        .sidebar__nav-button i,
-        .sidebar__footer-avatar {
-            animation: icon-fade-cycle .45s ease-in-out;
-        }
 
         .sidebar__title,
         .sidebar__nav-button span,
         .sidebar__footer-titlebox,
+        .sidebar__logout-btn span,
         .sidebar__footer-caret {
             opacity: 0;
         }
-    }
 
-    @keyframes icon-fade-out-in {
-        0% {
-            opacity: 0;
-        }
-
-        40% {
-            opacity: 0;
-        }
-
-        60% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
+        .sidebar__footer-content button i{
+            font-size: 2.5rem;
+            margin-left: 1.2rem;
         }
     }
+
+ 
 
     &:not(.sidebar--collapsed) {
         .sidebar__nav-button i,
-        .sidebar__footer-avatar  {
-            animation: icon-fade-out-in .45s ease-in-out;
+        .sidebar__footer-avatar,
+        .sidebar__logout-btn span {
+            animation: icon-fade-cycle .45s ease-in-out;
             opacity: 1;
         }
     }
-}
 
-.sidebar__footer--open .sidebar__footer-caret i {
-    transform: rotate(180deg);
-}
+    
 
-.sidebar__logout-btn {
-    all: unset;
-    cursor: pointer;
-    margin: 0 1.6rem 1.6rem 1.6rem;
-    padding: .8rem 0;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    border-top: .1rem solid $gray-300;
-    padding-top: 1.2rem;
-    color: $bg-red;
-    @include fontPrimaryRegular();
-    font-size: 1.4rem;
-    transition: color .2s ease-in-out;
+    &__footer--open .sidebar__footer-caret i {
+        transform: rotate(180deg);
+    }
 
-    &:hover {
-        color: darken($bg-red, 10%);
+    &__logout-btn {
+        all: unset;
+        cursor: pointer;
+        margin: 0 1.6rem 1.6rem 1.6rem;
+        padding: .8rem 0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        border-top: .1rem solid $color-border-input;
+        padding-top: 1.2rem;
+        color: $color-danger;
+        @include fontPrimaryRegular();
+        font-size: 1.4rem;
+        transition: color .2s ease-in-out;
+
+        &:hover {
+            color: color.adjust($color-danger, $lightness: -10%);
+        }
     }
 }

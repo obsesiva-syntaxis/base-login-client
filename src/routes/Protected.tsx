@@ -1,39 +1,33 @@
-import { Navigate, useLocation } from "react-router-dom"
-// import jwt_decode from "jwt-decode";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import type { ReactNode } from "react";
 import { useAuthStore } from "../store/authStore";
+import Loader from "../components/Loader";
 
-// interface JwtToken {
-//     id: string;
-//     iat: number;
-//     exp: number;
-// }
+interface ProtectedProps {
+    children: ReactNode;
+}
 
-// interface UserLoggedEssence {
-//     token: string;
-//     userId: string;
-//     fullName: string;
-//     email: string;
-//     active: boolean;
-// }
-
-export const Protected = ({ children }: { children: JSX.Element }) => {
+export const Protected = ({ children }: ProtectedProps) => {
     const location = useLocation();
+    const navigate = useNavigate();
     const user = useAuthStore((state) => state.user);
     const isTokenExpired = useAuthStore((state) => state.isTokenExpired);
-    
-    if (!user || isTokenExpired()) {
-        return <Navigate to="/" state={{ from: location }} replace />;
-    }    
-    
-    return children;
+    const clearUser = useAuthStore((state) => state.clearUser);
 
-    // console.log(userLogged);
-    // const userLogged: UserLoggedEssence = JSON.parse(localStorage.getItem('userLogged') || '{}') as UserLoggedEssence;
-    // if(Object.keys(userLogged).length === 0) {
-    //     return <Navigate to="/" state={{ from: location }} replace />;
-    // }
-    // const { exp }: JwtToken = jwt_decode(userLogged.token);
-    // if (Date.now() >= exp * 1000) {
-    //     return <Navigate to="/" state={{ from: location }} replace />;
-    // }
+    useEffect(() => {
+        if (!user) {
+            navigate('/', { replace: true });
+        } else if (isTokenExpired()) {
+            clearUser();
+            navigate('/', { state: { from: location }, replace: true });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    if (!user) {
+        return <Loader />;
+    }
+
+    return <>{children}</>;
 }

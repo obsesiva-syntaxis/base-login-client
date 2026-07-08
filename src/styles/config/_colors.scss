@@ -1,23 +1,18 @@
-$bg-dark: #343a40;
-$bg-red: #dc3545;
-$bg-red-light: #dc3546c0;
+$color-bg-primary: #343a40;
+$color-danger: #dc3545;
+$color-danger-light: #dc3546c0;
 
-// Base neutra (fondo)
-// Base neutra (fondo) — dark tech
-$bg-light: #14181a;
-$bg-surface: #1c2225;
-$bg-dark-text: #e8ecea;
+$color-bg-secondary: #14181a;
+$color-bg-surface: #1c2225;
+$color-text-primary: #e8ecea;
 
-// Verde protagonista
-$primary-green: #00806b;
-$primary-green-light: #4da594;
-$primary-green-dark: #015c4c;
+$color-primary: #00806b;
+$color-primary-light: #4da594;
+$color-primary-dark: #015c4c;
 
-// Acento frío (tech)
-$accent-blue: #3a7ca5;
-$accent-blue-light: #a8c5d6;
+$color-accent: #3a7ca5;
+$color-accent-light: #a8c5d6;
 
-// Neutros de soporte
-$gray-100: #2a3134;   // bordes sutiles sobre fondo oscuro
-$gray-300: #3a4347;   // bordes de inputs en reposo
-$gray-600: #8a9390;   // texto secundario / labels
+$color-border: #2a3134;
+$color-border-input: #3a4347;
+$color-text-secondary: #8a9390;

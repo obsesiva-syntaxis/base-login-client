@@ -1,8 +1,8 @@
-@import '../../styles/index.scss';
+@use '../../styles/index' as *;
 
 .dashboard {
     @include fullViewport();
-    background-color: $bg-dark;
+    background-color: $color-bg-primary;
     color: aliceblue;
     display: flex;
     flex-direction: column;

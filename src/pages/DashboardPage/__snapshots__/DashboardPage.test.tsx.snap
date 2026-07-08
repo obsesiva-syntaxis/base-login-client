@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DashboardPage matches snapshot when authenticated 1`] = `
+<div>
+  <div
+    class="dashboard"
+  >
+    <h1>
+      DASHBOARD
+    </h1>
+    <h2>
+      Bienvenido Maria Lopez
+    </h2>
+    <h3>
+      maria@test.com
+    </h3>
+  </div>
+</div>
+`;
+
+exports[`DashboardPage matches snapshot when unauthenticated 1`] = `
+<div>
+  <div
+    class="dashboard"
+  >
+    <h1>
+      DASHBOARD
+    </h1>
+    <h2>
+      No hay usuario logueado
+    </h2>
+    <h3>
+      No hay usuario logueado
+    </h3>
+  </div>
+</div>
+`;

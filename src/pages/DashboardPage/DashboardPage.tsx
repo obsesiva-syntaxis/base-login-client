@@ -1,12 +1,8 @@
 import { useAuthStore } from '../../store/authStore';
 import './DashboardPage.scss';
 
-export const DashboardPage = () => {
-
-    // Implementación de Zustand para obtener el usuario logueado
-
+const DashboardPage = () => {
     const user = useAuthStore((state) => state.user);
-
 
     return (
         <div className="dashboard">
@@ -16,3 +12,5 @@ export const DashboardPage = () => {
         </div>
     )
 }
+
+export default DashboardPage;

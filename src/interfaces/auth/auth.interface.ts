@@ -1,8 +1,8 @@
 export interface UserLoggedEssence {
-    active: boolean;
-    email: string;
-    fullname: string;
-    token: string;
     userId: string;
+    email: string;
+    fullName: string;
+    active: boolean;
+    token: string;
 }
 
