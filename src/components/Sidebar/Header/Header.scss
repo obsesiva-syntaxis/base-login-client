@@ -1,0 +1,78 @@
+@use 'sass:color';
+@use '../../../styles/index' as *;
+
+.sidebar__header {
+    position: relative;
+    min-height: 8rem;
+    display: flex;
+    align-items: center;
+    padding: 0 1.6rem;
+}
+
+.sidebar__title {
+    @include fontPrimaryLight();
+    font-size: 1.6rem;
+    color: $color-text-primary;
+}
+
+.sidebar__toggle {
+    all: unset;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    width: 3rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar__burger {
+    font-size: 1.6rem;
+    color: $color-primary;
+    transition: color .2s ease-in-out, transform .2s ease-in-out;
+}
+
+.sidebar__divider {
+    margin: 0 1.6rem;
+    border: none;
+    border-top: .1rem solid $color-border;
+}
+
+.sidebar--collapsed .sidebar__header {
+    padding: 0;
+    justify-content: center;
+}
+
+.sidebar--collapsed .sidebar__title {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+}
+
+.sidebar--collapsed .sidebar__toggle {
+    position: relative;
+    right: auto;
+    width: 100%;
+}
+
+.sidebar--collapsed .sidebar__burger {
+    color: $color-primary;
+}
+
+.sidebar--collapsed .sidebar__title {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+}
+
+.sidebar:not(.sidebar--collapsed) .sidebar__title {
+    opacity: 1;
+    transition-delay: .5s;
+    animation: icon-fade-cycle .30s ease-in-out;
+}
+
+.sidebar--collapsed .sidebar__title {
+    opacity: 0;
+    transition: opacity 0s ease-in-out;
+}

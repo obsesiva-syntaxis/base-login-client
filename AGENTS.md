@@ -17,6 +17,8 @@
 | `yarn start` | Dev server on port 3000 |
 | `yarn build` | Production build to `/build` |
 | `yarn test` | Jest (CRA-integrated, watch mode) |
+| `yarn generate:component Foo` | Scaffolding de componente con compound pattern |
+| `yarn generate:component Foo --context --subs=Header,Nav,Footer` | Con context y subcomponentes |
 
 - ESLint runs via react-scripts (extends `react-app` + `react-app/jest`). No standalone ESLint config.
 - No formatter (Prettier) is set up.
