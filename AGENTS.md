@@ -43,6 +43,10 @@
 
 ## AI Workflow
 
+Always use `yarn generate:component ComponentName` to create new components
+(e.g., `yarn generate:component Foo` or with subcomponents:
+`yarn generate:component Sidebar --context --subs=Header,Nav,Footer`).
+
 Before creating any plan or proposing changes, always consult the skills listed in
 `.agents/skills/` (`frontend-design`, `javascript-typescript-jest`, `scss-best-practices`,
 `vercel-composition-patterns`, `vercel-react-best-practices`) and reference the

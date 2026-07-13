@@ -1,0 +1,45 @@
+@use '../../../styles/index' as *;
+
+.table__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 1.2rem 1.6rem;
+  border-top: 1px solid $color-border;
+  background: $color-bg-primary;
+}
+
+.table__pagination-btn {
+  background: transparent;
+  border: 1px solid $color-border;
+  border-radius: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1.2rem;
+  color: $color-text-primary;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+
+  &:hover:not(:disabled) {
+    background: $color-primary;
+    border-color: $color-primary;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &--active {
+    background: $color-primary;
+    border-color: $color-primary;
+    font-weight: 600;
+  }
+}
+
+.table__pagination-ellipsis {
+  color: $color-text-secondary;
+  padding: 0 0.4rem;
+  font-size: 1.2rem;
+}

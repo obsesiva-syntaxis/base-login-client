@@ -1,0 +1,11 @@
+@use '../../styles/index' as *;
+
+.table {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid $color-border;
+  border-radius: $card-border-radius;
+  overflow: hidden;
+  background: $color-bg-surface;
+}

@@ -1,0 +1,14 @@
+@use '../../../styles/index' as *;
+
+.table__cell {
+  padding: 1.2rem 1.6rem;
+  font-size: 1.3rem;
+  color: $color-text-primary;
+  display: flex;
+  align-items: center;
+  word-break: break-word;
+
+  &--header {
+    padding: 1.4rem 1.6rem;
+  }
+}
