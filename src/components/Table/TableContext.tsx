@@ -7,6 +7,13 @@ export interface Column {
   render?: (row: Record<string, unknown>) => ReactNode;
 }
 
+export interface Action {
+  icon: string;
+  label: string;
+  variant?: 'default' | 'danger';
+  onClick: (row: Record<string, unknown>) => void;
+}
+
 interface TableState {
   page: number;
   totalPages: number;
@@ -22,6 +29,7 @@ interface TableActions {
 
 interface TableMeta {
   columns: Column[];
+  actions?: Action[];
 }
 
 export interface TableContextValue {
@@ -43,12 +51,17 @@ interface TableProviderProps {
   data: Record<string, unknown>[];
   columns: Column[];
   pageSize: number;
+  actions?: Action[];
+  controlled?: boolean;
+  currentPage?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
 }
 
-export const TableProvider = ({ children, data, columns, pageSize }: TableProviderProps) => {
+export const TableProvider = ({ children, data, columns, pageSize, actions, controlled = false, currentPage = 1, totalPages: externalTotalPages, onPageChange }: TableProviderProps) => {
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
-  const [page, setPage] = useState(1);
+  const [internalPage, setInternalPage] = useState(1);
 
   const sortedData = useMemo(() => {
     if (!sortKey) return data;
@@ -62,16 +75,22 @@ export const TableProvider = ({ children, data, columns, pageSize }: TableProvid
     });
   }, [data, sortKey, sortDir]);
 
-  const totalPages = Math.max(1, Math.ceil(data.length / pageSize));
+  const totalPages = controlled
+    ? (externalTotalPages ?? 1)
+    : Math.max(1, Math.ceil(data.length / pageSize));
 
-  const safePage = Math.min(page, totalPages);
+  const page = controlled
+    ? Math.min(currentPage, totalPages)
+    : Math.min(internalPage, totalPages);
+
   const paginatedData = useMemo(() => {
-    const start = (safePage - 1) * pageSize;
+    if (controlled) return sortedData;
+    const start = (page - 1) * pageSize;
     return sortedData.slice(start, start + pageSize);
-  }, [sortedData, safePage, pageSize]);
+  }, [controlled, sortedData, page, pageSize]);
 
   const setSort = useCallback((key: string) => {
-    setPage(1);
+    if (!controlled) setInternalPage(1);
     setSortKey(prev => {
       if (prev === key) {
         setSortDir(dir => (dir === 'asc' ? 'desc' : 'asc'));
@@ -80,15 +99,19 @@ export const TableProvider = ({ children, data, columns, pageSize }: TableProvid
       setSortDir('asc');
       return key;
     });
-  }, []);
+  }, [controlled]);
 
   const handleSetPage = useCallback((p: number) => {
-    setPage(Math.max(1, Math.min(p, totalPages)));
-  }, [totalPages]);
+    if (controlled) {
+      onPageChange?.(Math.max(1, p));
+    } else {
+      setInternalPage(Math.max(1, Math.min(p, totalPages)));
+    }
+  }, [controlled, onPageChange, totalPages]);
 
   const value = useMemo<TableContextValue>(() => ({
     state: {
-      page: safePage,
+      page,
       totalPages,
       sortKey,
       sortDir,
@@ -98,8 +121,8 @@ export const TableProvider = ({ children, data, columns, pageSize }: TableProvid
       setSort,
       setPage: handleSetPage,
     },
-    meta: { columns },
-  }), [safePage, totalPages, sortKey, sortDir, paginatedData, columns, setSort, handleSetPage]);
+    meta: { columns, actions },
+  }), [page, totalPages, sortKey, sortDir, paginatedData, columns, actions, setSort, handleSetPage]);
 
   return (
     <TableContext.Provider value={value}>

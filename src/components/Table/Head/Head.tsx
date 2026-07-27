@@ -4,10 +4,15 @@ import './Head.scss';
 const TableHead = () => {
   const { state, actions, meta } = useTable();
   const cols = meta.columns.length;
+  const hasActions = !!meta.actions?.length;
+
+  const gridTemplateColumns = hasActions
+    ? `repeat(${cols}, 1fr) auto`
+    : `repeat(${cols}, 1fr)`;
 
   return (
     <div className="table__head" data-testid="table__head">
-      <div className="table__row" style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}>
+      <div className="table__row" style={{ gridTemplateColumns }}>
         {meta.columns.map(col => (
           <div
             key={col.key}
@@ -27,6 +32,11 @@ const TableHead = () => {
             )}
           </div>
         ))}
+        {hasActions && (
+          <div className="table__cell table__cell--header table__cell--actions" data-testid="table__cell-actions-header">
+            Acciones
+          </div>
+        )}
       </div>
     </div>
   );

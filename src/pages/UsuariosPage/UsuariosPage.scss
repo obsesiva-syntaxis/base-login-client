@@ -1,7 +1,7 @@
 @use '../../styles/index' as *;
 
 .usuarios {
-    @include fullViewport();
+    @include fullStretch();
     background-color: $color-bg-primary;
     color: aliceblue;
     display: flex;

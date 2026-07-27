@@ -45,9 +45,11 @@ const Layout = () => {
                 <Sidebar.Nav links={navLinks} />
                 <Sidebar.Footer />
             </Sidebar>
-            <Suspense fallback={<Loader />}>
-                <Outlet />
-            </Suspense>
+            <main className="layout__content">
+                <Suspense fallback={<Loader />}>
+                    <Outlet />
+                </Suspense>
+            </main>
         </div>
     )
 }

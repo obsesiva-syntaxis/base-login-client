@@ -1,7 +1,7 @@
 @use '../../../styles/index' as *;
 
 .table__head {
-  background: $color-bg-primary;
+  background: $color-bg-surface;
   border-bottom: 2px solid $color-primary;
 
   .table__row {

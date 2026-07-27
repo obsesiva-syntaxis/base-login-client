@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Table from './Table';
-import type { Column } from './TableContext';
+import type { Column, Action } from './TableContext';
 
 const columns: Column[] = [
   { key: 'name', header: 'Nombre', sortable: true },
@@ -89,4 +89,49 @@ describe('Table', () => {
     fireEvent.click(nameHeader!);
     expect(screen.getByText('Alice')).toBeInTheDocument();
   });
+
+  it('renders actions column header when actions are provided', () => {
+    const actions: Action[] = [
+      { icon: '👁', label: 'Ver', onClick: jest.fn() },
+    ];
+    render(<Table data={data} columns={columns} actions={actions}><Table.Head /><Table.Body /></Table>);
+    expect(screen.getByText('Acciones')).toBeInTheDocument();
+  });
+
+  it('renders action buttons per row', () => {
+    const onClick = jest.fn();
+    const actions: Action[] = [
+      { icon: '👁', label: 'Ver', onClick },
+    ];
+    render(<Table data={data} columns={columns} actions={actions}><Table.Head /><Table.Body /></Table>);
+    const buttons = screen.getAllByRole('button', { name: 'Ver' });
+    expect(buttons).toHaveLength(data.length);
+  });
+
+  it('calls action onClick with row data', () => {
+    const onClick = jest.fn();
+    const actions: Action[] = [
+      { icon: '👁', label: 'Ver', onClick },
+    ];
+    render(<Table data={data} columns={columns} actions={actions}><Table.Head /><Table.Body /></Table>);
+    const buttons = screen.getAllByRole('button', { name: 'Ver' });
+    fireEvent.click(buttons[0]);
+    expect(onClick).toHaveBeenCalledTimes(1);
+    expect(onClick).toHaveBeenCalledWith(data[0]);
+  });
+
+  it('does not render actions column when no actions provided', () => {
+    render(<Table data={data} columns={columns}><Table.Head /><Table.Body /></Table>);
+    expect(screen.queryByText('Acciones')).not.toBeInTheDocument();
+  });
+
+  it('applies danger variant to action button', () => {
+    const actions: Action[] = [
+      { icon: '🗑', label: 'Eliminar', variant: 'danger', onClick: jest.fn() },
+    ];
+    render(<Table data={data} columns={columns} actions={actions}><Table.Head /><Table.Body /></Table>);
+    const buttons = screen.getAllByRole('button', { name: 'Eliminar' });
+    expect(buttons[0].classList.contains('table__action-btn--danger')).toBe(true);
+  });
+
 });
