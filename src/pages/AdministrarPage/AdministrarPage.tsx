@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useCallback, useState, useRef } from 'react';
 import Table from '../../components/Table';
+import TableSkeleton from '../../components/Table/Skeleton';
 import Modal from '../../components/Modal';
-import Loader from '../../components/Loader';
 import type { Column, Action } from '../../components/Table/TableContext';
 import type { UserApi } from '../../interfaces/user/user.interface';
 import { userService } from '../../services/userService';
@@ -100,12 +100,14 @@ const AdministrarPage = () => {
         {!loading && <span className="administrar__count">{total} usuarios</span>}
       </div>
 
-      {loading && <Loader />}
-
       {error && (
         <div className="administrar__error">
           {error}
         </div>
+      )}
+
+      {loading && !error && (
+        <TableSkeleton columns={columns.length} rows={PAGE_SIZE} hasActions />
       )}
 
       {!loading && !error && (
@@ -117,6 +119,7 @@ const AdministrarPage = () => {
           controlled
           currentPage={page}
           totalPages={totalPages}
+          totalItems={total}
           onPageChange={handlePageChange}
         >
           <Table.Head />

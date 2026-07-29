@@ -1,0 +1,57 @@
+@use '../../../styles/index' as *;
+
+@keyframes table-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.table__skeleton-bar {
+  display: inline-block;
+  height: 1.2rem;
+  border-radius: 0.3rem;
+  vertical-align: middle;
+  background: linear-gradient(
+    90deg,
+    $color-bg-primary 25%,
+    lighten($color-bg-primary, 8%) 50%,
+    $color-bg-primary 75%
+  );
+  background-size: 200% 100%;
+  animation: table-shimmer 1.5s ease-in-out infinite;
+
+  &--head {
+    height: 1rem;
+    width: 60%;
+  }
+
+  &--action {
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 0.4rem;
+  }
+
+  &--info {
+    width: 20rem;
+    height: auto;
+    line-height: 1.6rem;
+  }
+
+  &--btn {
+    width: 5rem;
+    height: 3.2rem;
+    line-height: 3rem;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    border-radius: 0.4rem;
+  }
+}
+
+.table[data-testid='table__skeleton'] {
+  .table__head {
+    border-bottom-color: $color-border;
+  }
+
+  .table__pagination {
+    justify-content: space-between;
+  }
+}

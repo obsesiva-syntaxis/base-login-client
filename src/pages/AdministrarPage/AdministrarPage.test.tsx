@@ -66,9 +66,9 @@ describe('AdministrarPage', () => {
     });
   });
 
-  it('shows loader while fetching', () => {
+  it('shows skeleton while fetching', () => {
     (userService.getAll as jest.Mock).mockImplementation(() => new Promise(() => {}));
     render(<AdministrarPage />);
-    expect(screen.getByTestId('loader')).toBeInTheDocument();
+    expect(screen.getByTestId('table__skeleton')).toBeInTheDocument();
   });
 });

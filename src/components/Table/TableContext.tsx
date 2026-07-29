@@ -17,6 +17,7 @@ export interface Action {
 interface TableState {
   page: number;
   totalPages: number;
+  totalItems?: number;
   sortKey: string | null;
   sortDir: 'asc' | 'desc';
   paginatedData: Record<string, unknown>[];
@@ -55,10 +56,11 @@ interface TableProviderProps {
   controlled?: boolean;
   currentPage?: number;
   totalPages?: number;
+  totalItems?: number;
   onPageChange?: (page: number) => void;
 }
 
-export const TableProvider = ({ children, data, columns, pageSize, actions, controlled = false, currentPage = 1, totalPages: externalTotalPages, onPageChange }: TableProviderProps) => {
+export const TableProvider = ({ children, data, columns, pageSize, actions, controlled = false, currentPage = 1, totalPages: externalTotalPages, totalItems, onPageChange }: TableProviderProps) => {
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [internalPage, setInternalPage] = useState(1);
@@ -113,6 +115,7 @@ export const TableProvider = ({ children, data, columns, pageSize, actions, cont
     state: {
       page,
       totalPages,
+      totalItems,
       sortKey,
       sortDir,
       paginatedData,
@@ -122,7 +125,7 @@ export const TableProvider = ({ children, data, columns, pageSize, actions, cont
       setPage: handleSetPage,
     },
     meta: { columns, actions },
-  }), [page, totalPages, sortKey, sortDir, paginatedData, columns, actions, setSort, handleSetPage]);
+  }), [page, totalPages, totalItems, sortKey, sortDir, paginatedData, columns, actions, setSort, handleSetPage]);
 
   return (
     <TableContext.Provider value={value}>

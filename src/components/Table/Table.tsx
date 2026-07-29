@@ -16,12 +16,13 @@ interface TableRootProps {
   controlled?: boolean;
   currentPage?: number;
   totalPages?: number;
+  totalItems?: number;
   onPageChange?: (page: number) => void;
 }
 
-const TableRoot = ({ children, data, columns, pageSize = 10, actions, controlled, currentPage, totalPages, onPageChange }: TableRootProps) => {
+const TableRoot = ({ children, data, columns, pageSize = 10, actions, controlled, currentPage, totalPages, totalItems, onPageChange }: TableRootProps) => {
   return (
-    <TableProvider data={data} columns={columns} pageSize={pageSize} actions={actions} controlled={controlled} currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange}>
+    <TableProvider data={data} columns={columns} pageSize={pageSize} actions={actions} controlled={controlled} currentPage={currentPage} totalPages={totalPages} totalItems={totalItems} onPageChange={onPageChange}>
       <div className="table" data-testid="table">
         {children}
       </div>
