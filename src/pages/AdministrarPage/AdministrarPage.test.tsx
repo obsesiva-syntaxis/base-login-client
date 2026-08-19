@@ -99,6 +99,15 @@ describe('AdministrarPage', () => {
     expect(screen.queryByTestId('table__skeleton')).not.toBeInTheDocument();
   });
 
+  it('fades the table out when changing page', async () => {
+    render(<AdministrarPage />);
+    await waitFor(() => expect(screen.getByText('Carlos Mendoza')).toBeInTheDocument());
+    const wrapper = screen.getByTestId('table').closest('.administrar__table')!;
+    expect(wrapper.classList.contains('administrar__table--in')).toBe(true);
+    fireEvent.click(screen.getByText('2'));
+    expect(wrapper.classList.contains('administrar__table--out')).toBe(true);
+  });
+
   it('opens edit modal with pre-filled values when clicking Modificar', async () => {
     render(<AdministrarPage />);
     const editButtons = await screen.findAllByRole('button', { name: 'Modificar' });

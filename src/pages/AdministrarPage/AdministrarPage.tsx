@@ -31,6 +31,7 @@ const editSchema = Yup.object({
 const AdministrarPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserApi | null>(null);
+  const [rowsPhase, setRowsPhase] = useState<'in' | 'out'>('in');
 
   const users = useUsersStore((state) => state.users);
   const total = useUsersStore((state) => state.total);
@@ -43,10 +44,18 @@ const AdministrarPage = () => {
   const setPage = useUsersStore((state) => state.setPage);
   const startEdit = useUsersStore((state) => state.startEdit);
   const closeEdit = useUsersStore((state) => state.closeEdit);
+  const prevLoadingRef = useRef(loading);
 
   useEffect(() => {
     void fetchUsers(page);
   }, [page, fetchUsers]);
+
+  useEffect(() => {
+    if (prevLoadingRef.current === true && loading === false) {
+      setRowsPhase('in');
+    }
+    prevLoadingRef.current = loading;
+  }, [loading]);
 
   const pageTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
@@ -57,9 +66,11 @@ const AdministrarPage = () => {
   }, []);
 
   const handlePageChange = useCallback((p: number) => {
+    if (p === page) return;
+    setRowsPhase('out');
     if (pageTimeoutRef.current) clearTimeout(pageTimeoutRef.current);
     pageTimeoutRef.current = setTimeout(() => setPage(p), 300);
-  }, [setPage]);
+  }, [page, setPage]);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
@@ -146,21 +157,23 @@ const AdministrarPage = () => {
       )}
 
       {users.length > 0 && (
-        <Table
-          data={users}
-          columns={columns}
-          pageSize={PAGE_SIZE}
-          actions={actions}
-          controlled
-          currentPage={page}
-          totalPages={totalPages}
-          totalItems={total}
-          onPageChange={handlePageChange}
-        >
-          <Table.Head />
-          <Table.Body />
-          <Table.Pagination />
-        </Table>
+        <div className={`administrar__table administrar__table--${rowsPhase}`}>
+          <Table
+            data={users}
+            columns={columns}
+            pageSize={PAGE_SIZE}
+            actions={actions}
+            controlled
+            currentPage={page}
+            totalPages={totalPages}
+            totalItems={total}
+            onPageChange={handlePageChange}
+          >
+            <Table.Head />
+            <Table.Body />
+            <Table.Pagination />
+          </Table>
+        </div>
       )}
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal} type="info">

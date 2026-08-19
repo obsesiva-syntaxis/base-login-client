@@ -29,6 +29,20 @@
     margin-bottom: 1rem;
   }
 
+  &__table {
+    &--out .table__body { animation: table-fade-out 0.15s ease forwards; }
+    &--in  .table__body { animation: table-fade-in 0.25s ease; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__table {
+      &--out .table__body,
+      &--in .table__body {
+        animation: none;
+      }
+    }
+  }
+
   &__form {
     display: flex;
     flex-direction: column;
@@ -152,4 +166,12 @@
       }
     }
   }
+}
+
+@keyframes table-fade-out {
+  to { opacity: 0; }
+}
+
+@keyframes table-fade-in {
+  from { opacity: 0; }
 }
