@@ -7,12 +7,12 @@ import TableCell from './Cell';
 import TablePagination from './Pagination';
 import './Table.scss';
 
-interface TableRootProps {
+interface TableRootProps<T> {
   children: ReactNode;
-  data: Record<string, unknown>[];
-  columns: Column[];
+  data: T[];
+  columns: Column<T>[];
   pageSize?: number;
-  actions?: Action[];
+  actions?: Action<T>[];
   controlled?: boolean;
   currentPage?: number;
   totalPages?: number;
@@ -20,7 +20,7 @@ interface TableRootProps {
   onPageChange?: (page: number) => void;
 }
 
-const TableRoot = ({ children, data, columns, pageSize = 10, actions, controlled, currentPage, totalPages, totalItems, onPageChange }: TableRootProps) => {
+const TableRoot = <T,>({ children, data, columns, pageSize = 10, actions, controlled, currentPage, totalPages, totalItems, onPageChange }: TableRootProps<T>) => {
   return (
     <TableProvider data={data} columns={columns} pageSize={pageSize} actions={actions} controlled={controlled} currentPage={currentPage} totalPages={totalPages} totalItems={totalItems} onPageChange={onPageChange}>
       <div className="table" data-testid="table">

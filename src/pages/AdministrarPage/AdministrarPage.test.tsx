@@ -1,11 +1,14 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import AdministrarPage from './AdministrarPage';
 import { userService } from '../../services/userService';
+import { useUsersStore } from '../../store/usersStore';
+import type { UserApi } from '../../interfaces/user/user.interface';
 
 jest.mock('../../services/userService', () => ({
   userService: {
     getAll: jest.fn(),
     delete: jest.fn(),
+    update: jest.fn(),
   },
 }));
 
@@ -29,6 +32,15 @@ const MOCK_RESPONSE = {
 beforeEach(() => {
   jest.clearAllMocks();
   (userService.getAll as jest.Mock).mockResolvedValue(MOCK_RESPONSE);
+  useUsersStore.setState({
+    users: [],
+    total: 0,
+    page: 1,
+    loading: false,
+    error: null,
+    editingUser: null,
+    isEditModalOpen: false,
+  });
 });
 
 describe('AdministrarPage', () => {
@@ -70,5 +82,60 @@ describe('AdministrarPage', () => {
     (userService.getAll as jest.Mock).mockImplementation(() => new Promise(() => {}));
     render(<AdministrarPage />);
     expect(screen.getByTestId('table__skeleton')).toBeInTheDocument();
+  });
+
+  it('shows cached rows during background refresh (SWR)', () => {
+    (userService.getAll as jest.Mock).mockImplementation(() => new Promise(() => {}));
+    useUsersStore.setState({
+      users: MOCK_USERS as UserApi[],
+      total: 10,
+      page: 1,
+      loading: true,
+      error: null,
+    });
+    render(<AdministrarPage />);
+    expect(screen.getByText('Carlos Mendoza')).toBeInTheDocument();
+    expect(screen.getByText('10 usuarios')).toBeInTheDocument();
+    expect(screen.queryByTestId('table__skeleton')).not.toBeInTheDocument();
+  });
+
+  it('opens edit modal with pre-filled values when clicking Modificar', async () => {
+    render(<AdministrarPage />);
+    const editButtons = await screen.findAllByRole('button', { name: 'Modificar' });
+    fireEvent.click(editButtons[0]);
+    expect(screen.getByText('Editar usuario: Carlos Mendoza')).toBeInTheDocument();
+    expect(screen.getByLabelText('Nombre completo')).toHaveValue('Carlos Mendoza');
+    expect(screen.getByLabelText('Email')).toHaveValue('carlos@empresa.com');
+    expect(screen.getByLabelText('Roles (separados por coma)')).toHaveValue('admin');
+  });
+
+  it('calls update and reloads current page on submit', async () => {
+    (userService.update as jest.Mock).mockResolvedValue({ data: {} });
+    render(<AdministrarPage />);
+    const editButtons = await screen.findAllByRole('button', { name: 'Modificar' });
+    fireEvent.click(editButtons[0]);
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'nuevo@empresa.com' } });
+    fireEvent.click(screen.getByText('Guardar'));
+    await waitFor(() => {
+      expect(userService.update).toHaveBeenCalledWith(
+        '1',
+        expect.objectContaining({ email: 'nuevo@empresa.com', roles: ['admin'] })
+      );
+      expect(userService.getAll).toHaveBeenCalledTimes(2);
+    });
+    expect(screen.queryByText('Editar usuario: Carlos Mendoza')).not.toBeInTheDocument();
+  });
+
+  it('blocks submit when email is invalid', async () => {
+    (userService.update as jest.Mock).mockResolvedValue({ data: {} });
+    render(<AdministrarPage />);
+    const editButtons = await screen.findAllByRole('button', { name: 'Modificar' });
+    fireEvent.click(editButtons[0]);
+    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'correo-invalido' } });
+    fireEvent.click(screen.getByText('Guardar'));
+    await waitFor(() => {
+      expect(screen.getByText('Email debe ser en un formato válido')).toBeInTheDocument();
+    });
+    expect(userService.update).not.toHaveBeenCalled();
   });
 });

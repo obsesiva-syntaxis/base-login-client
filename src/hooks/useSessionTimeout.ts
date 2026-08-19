@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useAuthStore } from "../store/authStore";
+import { useUsersStore } from "../store/usersStore";
 
 const DEFAULT_TIMEOUT_MS = 15 * 60 * 1000;
 
@@ -17,6 +18,7 @@ export const useSessionTimeout = (timeoutMs: number = DEFAULT_TIMEOUT_MS): void 
       clearTimer();
       timerRef.current = setTimeout(() => {
         useAuthStore.getState().clearUser();
+        useUsersStore.getState().clear();
       }, timeoutMs);
     };
 

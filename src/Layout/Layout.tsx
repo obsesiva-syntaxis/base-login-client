@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import type { SidebarLink } from "../components/Sidebar/Nav/Nav";
 import { useAuthStore } from "../store/authStore";
+import { useUsersStore } from "../store/usersStore";
 import { useSessionTimeout } from "../hooks/useSessionTimeout";
 import Loader from "../components/Loader";
 import './Layout.scss';
@@ -19,6 +20,7 @@ const Layout = () => {
             const { user, isTokenExpired } = useAuthStore.getState();
             if (user && isTokenExpired()) {
                 clearUser();
+                useUsersStore.getState().clear();
                 navigate('/');
             }
         };

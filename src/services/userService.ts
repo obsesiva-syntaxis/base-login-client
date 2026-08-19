@@ -11,4 +11,7 @@ export const userService = {
 
   delete: (id: string) =>
     http.delete(id, USERS_PATH),
+
+  update: (id: string, body: Partial<UserApi>) =>
+    http.patch<ApiResponse<UserApi>>(id, USERS_PATH, body),
 };

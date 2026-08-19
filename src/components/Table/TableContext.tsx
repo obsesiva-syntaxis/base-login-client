@@ -1,26 +1,26 @@
 import { createContext, useContext, useMemo, useState, useCallback, type ReactNode } from 'react';
 
-export interface Column {
-  key: string;
+export interface Column<T = Record<string, unknown>> {
+  key: keyof T & string;
   header: string;
   sortable?: boolean;
-  render?: (row: Record<string, unknown>) => ReactNode;
+  render?: (row: T) => ReactNode;
 }
 
-export interface Action {
+export interface Action<T = Record<string, unknown>> {
   icon: string;
   label: string;
   variant?: 'default' | 'danger';
-  onClick: (row: Record<string, unknown>) => void;
+  onClick: (row: T) => void;
 }
 
-interface TableState {
+interface TableState<T> {
   page: number;
   totalPages: number;
   totalItems?: number;
   sortKey: string | null;
   sortDir: 'asc' | 'desc';
-  paginatedData: Record<string, unknown>[];
+  paginatedData: T[];
 }
 
 interface TableActions {
@@ -28,31 +28,31 @@ interface TableActions {
   setPage: (page: number) => void;
 }
 
-interface TableMeta {
-  columns: Column[];
-  actions?: Action[];
+interface TableMeta<T> {
+  columns: Column<T>[];
+  actions?: Action<T>[];
 }
 
-export interface TableContextValue {
-  state: TableState;
+export interface TableContextValue<T = Record<string, unknown>> {
+  state: TableState<T>;
   actions: TableActions;
-  meta: TableMeta;
+  meta: TableMeta<T>;
 }
 
-const TableContext = createContext<TableContextValue | null>(null);
+const TableContext = createContext<TableContextValue<any> | null>(null);
 
-export const useTable = () => {
+export const useTable = <T = Record<string, unknown>>(): TableContextValue<T> => {
   const ctx = useContext(TableContext);
   if (!ctx) throw new Error('useTable must be used within <Table>');
-  return ctx;
+  return ctx as TableContextValue<T>;
 };
 
-interface TableProviderProps {
+interface TableProviderProps<T> {
   children: ReactNode;
-  data: Record<string, unknown>[];
-  columns: Column[];
+  data: T[];
+  columns: Column<T>[];
   pageSize: number;
-  actions?: Action[];
+  actions?: Action<T>[];
   controlled?: boolean;
   currentPage?: number;
   totalPages?: number;
@@ -60,7 +60,7 @@ interface TableProviderProps {
   onPageChange?: (page: number) => void;
 }
 
-export const TableProvider = ({ children, data, columns, pageSize, actions, controlled = false, currentPage = 1, totalPages: externalTotalPages, totalItems, onPageChange }: TableProviderProps) => {
+export const TableProvider = <T,>({ children, data, columns, pageSize, actions, controlled = false, currentPage = 1, totalPages: externalTotalPages, totalItems, onPageChange }: TableProviderProps<T>) => {
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [internalPage, setInternalPage] = useState(1);
@@ -68,8 +68,8 @@ export const TableProvider = ({ children, data, columns, pageSize, actions, cont
   const sortedData = useMemo(() => {
     if (!sortKey) return data;
     return [...data].sort((a, b) => {
-      const aVal = a[sortKey];
-      const bVal = b[sortKey];
+      const aVal = (a as Record<string, unknown>)[sortKey];
+      const bVal = (b as Record<string, unknown>)[sortKey];
       if (aVal == null) return 1;
       if (bVal == null) return -1;
       const cmp = String(aVal).localeCompare(String(bVal), undefined, { numeric: true });
@@ -111,7 +111,7 @@ export const TableProvider = ({ children, data, columns, pageSize, actions, cont
     }
   }, [controlled, onPageChange, totalPages]);
 
-  const value = useMemo<TableContextValue>(() => ({
+  const value = useMemo<TableContextValue<T>>(() => ({
     state: {
       page,
       totalPages,

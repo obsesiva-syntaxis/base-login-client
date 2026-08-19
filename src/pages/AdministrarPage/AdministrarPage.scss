@@ -23,4 +23,133 @@
     padding: 0.4rem 1.2rem;
     border-radius: 2rem;
   }
+
+  &__error {
+    color: $color-danger;
+    margin-bottom: 1rem;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    &-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+
+      label {
+        @include fontPrimaryLight();
+        font-size: 1.6rem;
+        color: $color-text-primary;
+      }
+
+      &-input {
+        color-scheme: dark;
+        background-color: $color-bg-surface;
+        color: $color-text-primary;
+        @include fontPrimaryRegular();
+        border: 0.1rem solid $color-border-input;
+        height: 3.6rem;
+        font-size: 1.6rem;
+        border-radius: 0.5rem;
+        padding: 0 1rem;
+        transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+        &::placeholder {
+          color: $color-text-secondary;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: $color-primary;
+          box-shadow: 0 0 0 0.3rem rgba($color-primary, 0.12);
+        }
+
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active {
+          -webkit-box-shadow: 0 0 0 100rem $color-bg-surface inset !important;
+          -webkit-text-fill-color: $color-text-primary !important;
+          font-size: 1.6rem !important;
+          caret-color: $color-text-primary;
+          transition: background-color 5000s ease-in-out 0s;
+        }
+      }
+
+      &--inline {
+        flex-direction: row;
+        align-items: center;
+        gap: 1rem;
+
+        input[type='checkbox'] {
+          width: 1.8rem;
+          height: 1.8rem;
+          accent-color: $color-primary;
+          cursor: pointer;
+        }
+      }
+
+      span {
+        @include fontPrimaryLight();
+        font-size: 1.4rem;
+        font-weight: 500;
+        letter-spacing: 0.1rem;
+        color: $color-accent;
+        min-height: 2rem;
+        line-height: 2rem;
+        visibility: hidden;
+
+        &:not(:empty) {
+          visibility: visible;
+        }
+      }
+    }
+  }
+
+  &__btn {
+    all: unset;
+    cursor: pointer;
+    width: 10rem;
+    height: 4rem;
+    background-color: $color-primary;
+    color: #fff;
+    text-align: center;
+    @include fontPrimaryLight();
+    border-radius: 0.5rem;
+    font-size: 1.6rem;
+    transition: transform 0.3s ease-in-out, letter-spacing 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    padding: 0.5rem;
+
+    &:hover:not(:disabled) {
+      background-color: $color-primary-light;
+      letter-spacing: 0.2rem;
+      transform: scale(1.05);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(1.1);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    &--ghost {
+      background-color: transparent;
+      border: 0.1rem solid $color-border;
+      color: $color-text-secondary;
+
+      &:hover:not(:disabled) {
+        background-color: transparent;
+        color: $color-text-primary;
+        letter-spacing: 0.05rem;
+        transform: none;
+      }
+    }
+  }
 }

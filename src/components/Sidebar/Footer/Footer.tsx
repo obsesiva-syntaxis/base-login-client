@@ -1,6 +1,7 @@
 import { startTransition } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../../store/authStore';
+import { useUsersStore } from '../../../store/usersStore';
 import { useSidebar } from '../SidebarContext';
 import './Footer.scss';
 
@@ -13,6 +14,7 @@ const Footer = () => {
     const handleLogout = () => {
         startTransition(() => {
             clearUser();
+            useUsersStore.getState().clear();
             nav('/');
         });
     };
