@@ -104,6 +104,53 @@ Todas las peticiones autenticadas pasan por `AxiosAdapter` (`src/patterns/AxiosA
 | `yarn build` | Genera el build de producción en `build/` |
 | `yarn test` | Corre los tests en modo watch (Jest + Testing Library) |
 | `yarn eject` | Expone la configuración de Create React App (operación irreversible) |
+| `yarn generate:component <Nombre>` | Genera un componente nuevo con la estructura estándar del proyecto (ver [Generador de componentes](#generador-de-componentes)) |
+
+> `yarn generate:component` está disponible en la rama `feature/obsynth` (aún no mergeada a `main` al momento de escribir esto).
+
+## Generador de componentes
+
+`scripts/generate-component.js` crea componentes nuevos ya adaptados al patrón que usa el proyecto (compound components + BEM, como `Sidebar`), en vez de armar la carpeta a mano cada vez.
+
+```bash
+yarn generate:component <Nombre> [--subs=Sub1,Sub2,...] [--context]
+```
+
+- **`<Nombre>`** (requerido): nombre del componente en PascalCase (ej. `Modal`, `Table`). Falla si ya existe una carpeta con ese nombre en `src/components/`.
+- **`--subs=Sub1,Sub2`** (opcional): genera subcomponentes como archivos separados (ej. `Header`, `Nav`, `Footer`), cada uno con su propio `.tsx`, `.scss` e `index.ts`, y los expone en el componente principal vía `Object.assign` (el mismo patrón compound component que `Sidebar.Header`, `Sidebar.Nav`, `Sidebar.Footer`).
+- **`--context`** (opcional): además genera `<Nombre>Context.tsx` con un `createContext`/`useContext`/`Provider` de base (boilerplate a completar), y envuelve el componente raíz en ese Provider.
+
+Ejemplo:
+
+```bash
+yarn generate:component Table --subs=Header,Row,Footer --context
+```
+
+Esto genera:
+
+```
+src/components/Table/
+├── index.ts              # export { default } from './Table'
+├── Table.tsx              # componente raíz + Object.assign con subcomponentes
+├── Table.scss             # scaffold con @use '../../styles/index' as *
+├── Table.test.tsx         # test base con Testing Library (data-testid)
+├── TableContext.tsx        # contexto (por --context)
+├── Header/
+│   ├── index.ts
+│   ├── Header.tsx
+│   └── Header.scss
+├── Row/
+│   └── ...
+└── Footer/
+    └── ...
+```
+
+Convenciones que aplica automáticamente el generador:
+
+- Clase raíz en kebab-case derivada del nombre (`Table` → `.table`), y clases de subcomponentes en BEM (`.table__header`).
+- Cada archivo generado incluye un `data-testid` igual a su clase CSS, para que el test base pueda encontrarlo con `getByTestId`.
+- Los `.scss` generados ya importan las variables/mixins globales (`@use '../../styles/index' as *`).
+- El test generado solo verifica que el componente renderiza; hay que completar los casos reales.
 
 ## Stack tecnológico
 
