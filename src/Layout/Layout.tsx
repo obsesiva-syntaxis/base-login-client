@@ -1,17 +1,15 @@
-import { useEffect } from "react";
+import { Suspense, startTransition, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import type { SidebarLink } from "../components/Sidebar/Nav/Nav";
 import { useAuthStore } from "../store/authStore";
+import { useUsersStore } from "../store/usersStore";
 import { useSessionTimeout } from "../hooks/useSessionTimeout";
+import Loader from "../components/Loader";
 import './Layout.scss';
 
-const navLinks = [
-    { icon: 'fas fa-home', label: 'Inicio' },
-    { icon: 'fas fa-user', label: 'Perfil' },
-    { icon: 'fas fa-cog', label: 'Configuración' },
-];
-
 const Layout = () => {
+    const user = useAuthStore((state) => state.user);
     const clearUser = useAuthStore((state) => state.clearUser);
     const navigate = useNavigate();
 
@@ -22,6 +20,7 @@ const Layout = () => {
             const { user, isTokenExpired } = useAuthStore.getState();
             if (user && isTokenExpired()) {
                 clearUser();
+                useUsersStore.getState().clear();
                 navigate('/');
             }
         };
@@ -32,6 +31,15 @@ const Layout = () => {
         return () => clearInterval(interval);
     }, [clearUser, navigate]);
 
+    const isAdmin = user?.roles?.includes('admin');
+    const navLinks: SidebarLink[] = [
+        { icon: 'fas fa-home', label: 'Inicio', onClick: () => startTransition(() => navigate('/dashboard')) },
+        { icon: 'fas fa-file-contract', label: 'Usuarios', onClick: () => startTransition(() => navigate('/usuarios')) },
+    ];
+    if (isAdmin) {
+        navLinks.push({ icon: 'fas fa-shield-alt', label: 'Administrar', onClick: () => startTransition(() => navigate('/administrar')) });
+    }
+
     return (
         <div className="layout">
             <Sidebar>
@@ -39,7 +47,11 @@ const Layout = () => {
                 <Sidebar.Nav links={navLinks} />
                 <Sidebar.Footer />
             </Sidebar>
-            <Outlet />
+            <main className="layout__content">
+                <Suspense fallback={<Loader />}>
+                    <Outlet />
+                </Suspense>
+            </main>
         </div>
     )
 }

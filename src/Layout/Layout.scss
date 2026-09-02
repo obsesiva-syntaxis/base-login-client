@@ -3,11 +3,17 @@
 .layout {
     @include fullViewport();
     position: relative;
-    overflow: hidden;
+    padding: 1rem;
+    background: $color-bg-primary;
 
     &__content {
-        @include fullViewport();
-        background: $color-bg-secondary;
-        transition: padding-left .2s ease-in-out;
+        @include fullStretch();
+        overflow-y: auto;
+        transition: padding-left .3s ease-in-out;
+        padding-left: calc($sidebar-width + 1rem);
+
+        .layout:has(.sidebar--collapsed) & {
+            padding-left: calc($sidebar-width-min + 1rem);
+        }
     }
 }

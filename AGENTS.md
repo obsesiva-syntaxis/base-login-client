@@ -17,6 +17,8 @@
 | `yarn start` | Dev server on port 3000 |
 | `yarn build` | Production build to `/build` |
 | `yarn test` | Jest (CRA-integrated, watch mode) |
+| `yarn generate:component Foo` | Scaffolding de componente con compound pattern |
+| `yarn generate:component Foo --context --subs=Header,Nav,Footer` | Con context y subcomponentes |
 
 - ESLint runs via react-scripts (extends `react-app` + `react-app/jest`). No standalone ESLint config.
 - No formatter (Prettier) is set up.
@@ -38,3 +40,14 @@
 - **Not a monorepo** — single package `fend-uccinv`.
 - **Mock pattern for AxiosAdapter:** Prefer `(AxiosAdapter.prototype as any).method = jest.fn()` over `jest.spyOn().mockImplementation()`. For axios-level mocking, use `jest.mock('axios')` with `(axios.create as jest.Mock).mockReturnValue(mockInstance)` in `beforeEach` after `jest.clearAllMocks()`.
 - **JWT in tests:** Use real (but fake) JWT tokens (`header.payload.signature`) so `jwtDecode` doesn't throw. Generate with `Buffer.from(JSON.stringify(obj)).toString('base64url')`.
+
+## AI Workflow
+
+Always use `yarn generate:component ComponentName` to create new components
+(e.g., `yarn generate:component Foo` or with subcomponents:
+`yarn generate:component Sidebar --context --subs=Header,Nav,Footer`).
+
+Before creating any plan or proposing changes, always consult the skills listed in
+`.agents/skills/` (`frontend-design`, `javascript-typescript-jest`, `scss-best-practices`,
+`vercel-composition-patterns`, `vercel-react-best-practices`) and reference the
+relevant rules in the proposal.

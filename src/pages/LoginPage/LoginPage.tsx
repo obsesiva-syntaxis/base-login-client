@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useAuthStore } from '../../store/authStore';
 import type { UserLoggedEssence } from '../../interfaces/auth/auth.interface';
+import type { ApiResponse } from '../../interfaces/user/user.interface';
 import toast from 'react-hot-toast';
 import './LoginPage.scss';
 
@@ -19,6 +20,7 @@ interface UserEssence {
     email: string;
     fullname: string;
     active: boolean;
+    roles: string[];
     created_at: string;
     modified_at?: string;
     deleted_at?: string;
@@ -30,6 +32,7 @@ interface LoginEssence {
 }
 
 const API_URL = process.env.REACT_APP_API_URL ?? 'http://localhost:3030/api';
+const AUTH_LOGIN_PATH = process.env.REACT_APP_AUTH_LOGIN_PATH ?? '/auth/login';
 const http = new AxiosAdapter(API_URL);
 
 const LoginPage = () => {
@@ -51,7 +54,7 @@ const LoginPage = () => {
     const handleSubmit = async ( values: LoginFormEssence ) => {
         setIsLoading(true);
         try {
-            const { token, user } = await http.post<LoginEssence>('/auth/login', values);
+            const { data: { token, user } } = await http.post<ApiResponse<LoginEssence>>(AUTH_LOGIN_PATH, values);
             if (!user.active) {
                 setErrorMessage('Usuario inactivo, comuniquese con soporte técnico');
                 setIsLoading(false);
@@ -64,6 +67,7 @@ const LoginPage = () => {
                 fullName: user.fullname,
                 active: user.active,
                 token: token,
+                roles: user.roles,
             }
 
             setUser(userLogged);

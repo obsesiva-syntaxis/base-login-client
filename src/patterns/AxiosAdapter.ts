@@ -5,7 +5,7 @@ export interface HttpAdapter {
   get<X>(url: string): Promise<X>;
   post<X>(url: string, body: any): Promise<X>;
   patch<X>(id: number, url: string, body: any): Promise<X>;
-  delete(id: number, url: string): Promise<number>;
+  delete(id: string | number, url: string): Promise<string | number>;
 }
 
 export class AxiosAdapter implements HttpAdapter {
@@ -57,7 +57,7 @@ export class AxiosAdapter implements HttpAdapter {
     return data;
   }
 
-  async delete(id: number, url: string): Promise<number> {
+  async delete(id: string | number, url: string): Promise<string | number> {
     await this.axios.delete(`${url}/${id}`);
     return id;
   }

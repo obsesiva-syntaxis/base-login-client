@@ -16,6 +16,7 @@ const mockUser = {
   fullName: 'Juan Perez',
   active: true,
   token: 'valid-token',
+  roles: ['admin'],
 };
 
 let mockLinks: { icon: string; label: string; onClick: jest.Mock }[];
@@ -65,7 +66,7 @@ it('Header toggle collapses and expands', async () => {
 it('Nav renders all link buttons', () => {
   renderSidebar();
   expect(screen.getByText('Inicio')).toBeInTheDocument();
-  expect(screen.getByText('Perfil')).toBeInTheDocument();
+  expect(screen.getAllByText('Perfil').length).toBeGreaterThanOrEqual(1);
 });
 
 it('Nav clicking a link fires onClick', async () => {

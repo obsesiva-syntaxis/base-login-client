@@ -9,9 +9,11 @@ const mockUser = {
   fullName: 'Test User',
   active: true,
   token: 'valid-token',
+  roles: ['user'],
 };
 
 beforeEach(() => {
+  (jwtDecode as jest.Mock).mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 3600 });
   useAuthStore.setState({ user: null });
   localStorage.clear();
   jest.clearAllMocks();

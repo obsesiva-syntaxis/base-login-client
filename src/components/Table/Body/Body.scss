@@ -1,0 +1,22 @@
+@use '../../../styles/index' as *;
+
+.table__body {
+  .table__row {
+    transition: background 0.15s;
+
+    &:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+}
+
+.table__empty {
+  padding: 3rem 2rem;
+  text-align: center;
+  color: $color-text-secondary;
+  font-size: 1.4rem;
+}

@@ -1,0 +1,10 @@
+@use '../../../styles/index' as *;
+
+.modal__body {
+  padding: 2rem;
+  overflow-y: auto;
+  flex: 1;
+  color: $color-text-primary;
+  font-size: 1.4rem;
+  line-height: 1.6;
+}

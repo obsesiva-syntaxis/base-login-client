@@ -30,8 +30,13 @@ const defaultUser = {
 };
 
 const defaultApiResponse = {
-  token: 'abc',
-  user: defaultUser,
+  statusCode: 201,
+  message: 'Created',
+  data: {
+    token: 'abc',
+    user: defaultUser,
+  },
+  timestamp: '2026-07-27T00:00:00Z',
 };
 
 beforeEach(() => {
@@ -42,7 +47,7 @@ beforeEach(() => {
 it('prototype mock is wired correctly', async () => {
   mockPost.mockResolvedValue(defaultApiResponse);
   const result = await (AxiosAdapter.prototype as any).post('/test', {});
-  expect(result.token).toBe('abc');
+  expect(result.data.token).toBe('abc');
   expect(mockPost).toHaveBeenCalledWith('/test', {});
 });
 
@@ -102,7 +107,10 @@ it('navigates to /dashboard on success', async () => {
 it('shows error for inactive user', async () => {
   mockPost.mockResolvedValue({
     ...defaultApiResponse,
-    user: { ...defaultUser, active: false },
+    data: {
+      ...defaultApiResponse.data,
+      user: { ...defaultUser, active: false },
+    },
   });
   renderLoginPage();
   await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
